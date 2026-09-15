@@ -7,9 +7,6 @@
 
 //using namespace std;
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
 
 enum Color {
     WHITE,
@@ -27,18 +24,12 @@ enum PieceType {
     EMPTY
 };
 
-struct Position {
-    int row;
-    int col;
-    bool operator==(const Position& other) const {
-        return row == other.row && col == other.col;
-    }
-};
-
 struct Piece {
     PieceType type;
     Color color;
     char symbol;
+    int moves;
+
 };
 
 /* 
@@ -66,98 +57,68 @@ class ChessBoard {
 private:
    Piece board[8][8];
    Color currentTurn;
-
-    void setupBoard() {
-        for (int row = 2; row < 6; ++row) {
-            for (int col = 0; col < 8; ++col) {
-                board[row][col] = {EMPTY, NONE, ' '}; // Empty squares
+   
+   void boardSetup(){
+        
+        //this created the empty board with no pieces on it.
+        for(int i = 2; i < 6; i++){
+            for(int j = 0; j < 8; j++){
+                board[i][j]= {EMPTY, NONE, ' ', 0};
+                
             }
         }
 
-        for (int col = 0; col < 8; ++col) {
-            board[1][col] = {PAWN, BLACK, 'p'}; // Black pawns
-            board[6][col] = {PAWN, WHITE, 'P'}; // White pawns
+        for (int i = 0; i < 8; i++){
+            board[1][i]= {PAWN, BLACK, 'p', 0};
+            board[6][i]= {PAWN, WHITE, 'P', 0};
         }
 
-        char blackPieces[] = {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'};
-        char whitePieces[] = {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
-        PieceType pieceTypes[] = {ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
+        char backRowSymbolsBlack[8] = {'l', 'n', 'b', 'q', 'k', 'b', 'n', 'r'};
+        char backRowSymbolsWhite[8] = {'L', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
+        PieceType backRowTypes[8] = {ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
 
-        for (int col = 0; col < 8; ++col) {
-            board[0][col] = {pieceTypes[col], BLACK, blackPieces[col]}; // Black pieces
-            board[7][col] = {pieceTypes[col], WHITE, whitePieces[col]}; // White pieces
+        for (int i = 0; i < 8; i++){
+            board[0][i]= {backRowTypes[i], BLACK, backRowSymbolsBlack[i], 0};
+            board[7][i]= {backRowTypes[i], WHITE, backRowSymbolsWhite[i], 0};
         }
-    }
 
-    bool isPathClear(Position from, Position to) {
-        int rowStep = (to.row - from.row) == 0 ? 0 : (to.row - from.row) / std::abs(to.row - from.row);
-        int colStep = (to.col - from.col) == 0 ? 0 : (to.col - from.col) / std::abs(to.col - from.col);
-
-        int currentRow = from.row + rowStep;
-        int currentCol = from.col + colStep;
-
-        while (currentRow != to.row || currentCol != to.col) {
-            if (board[currentRow][currentCol].type != EMPTY) {
-                return false; // Path is blocked
-            }
-            currentRow += rowStep;
-            currentCol += colStep;
         }
-        return true; // Path is clear
-    }
-    
-
     
 
 public: 
-    ChessBoard() : currentTurn(WHITE) {
-        setupBoard();
+    
+    ChessBoard() {
+        currentTurn = WHITE;
+        boardSetup();
     }
+    
 
-    void display(){
-        std::cout << "   a   b   c   d   e   f   g   h\n";
-        std::cout << " +---+---+---+---+---+---+---+---+\n";
-        for (int row = 0; row < 8; ++row) {
-            std::cout << 8 - row << "|";
-            for (int col = 0; col < 8; ++col) {
-                std::cout << " " << board[row][col].symbol << " |";
+    void displayBoardWhiteSide() {
+        std::cout << "    a   b   c   d   e   f   g   h" << std::endl;
+        std::cout << "  +---+---+---+---+---+---+---+---+" << std::endl;
+        for (int i = 0; i < 8; i++) {
+            std::cout << 8 - i << " | ";
+            for (int j = 0; j < 8; j++) {
+                std::cout << board[i][j].symbol << " | ";
+            };
+            std::cout << 8 - i << std::endl;
+            std::cout << "  +---+---+---+---+---+---+---+---+" << std::endl;
+        }
+        std::cout << "    a   b   c   d   e   f   g   h"<< std::endl;
+    }
+    
+    void displayBoardBlackSide() {
+        std::cout << "    h   g   f   e   d   c   b   a" << std::endl;
+        std::cout << "  +---+---+---+---+---+---+---+---+" << std::endl;
+        for (int i = 7; i >= 0; i--) {
+            std::cout << i+1 << " | ";
+            for (int j = 7; j >= 0; j--) {
+                std::cout << board[i][j].symbol << " | ";
             }
-            std::cout << " " << 8 - row << "\n";
-            std::cout << " +---+---+---+---+---+---+---+---+\n";
+            std::cout << i+1 << std::endl;
+            std::cout << "  +---+---+---+---+---+---+---+---+" << std::endl;
         }
-    }
-
-    Color getCurrentTurn() {
-        return currentTurn;
-    }
-
-    bool validateMove(Position from, Position to) {
-        if (from.row < 0 || from.row >= 8 || from.col < 0 || from.col >= 8 ||
-            to.row < 0 || to.row >= 8 || to.col < 0 || to.col >= 8) {
-            return false; // Out of bounds
-        }
-
-        Piece movingPiece = board[from.row][from.col];
-        Piece targetPiece = board[to.row][to.col];
-
-        if (movingPiece.type == EMPTY || movingPiece.color != currentTurn) {
-            return false; // No piece to move or wrong turn
-        }
-
-        if (targetPiece.color == currentTurn) {
-            return false; // Cannot capture own piece
-        }
-
-        // Check if the path is clear for pieces that require it
-        if (movingPiece.type == ROOK || movingPiece.type == BISHOP || movingPiece.type == QUEEN) {
-            if (!isPathClear(from, to)) {
-                return false; // Path is blocked
-            }
-        }
-
-        // Additional movement rules for each piece type can be added here
-
-        return true; // Move is valid
+        std::cout << "    h   g   f   e   d   c   b   a"<< std::endl;
     }
 
 
@@ -172,7 +133,9 @@ public:
 
 int main(){
 
-    
-
+    ChessBoard game;
+    game.displayBoardWhiteSide();
+    std::cout << "\n\n------------------------------------------\n\n";
+    game.displayBoardBlackSide();
     return 0;
 }
