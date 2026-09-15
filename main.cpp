@@ -32,25 +32,6 @@ struct Piece {
 
 };
 
-/* 
-    //Black Pieces
-        {"King", "Black", "♚"};
-        {"Queen", "Black", "♛"};
-        {"Rook", "Black", "♜"};
-        {"Bishop", "Black", "♝"};
-        {"Knight", "Black", "♞"};
-        {"Pawn", "Black", "♟"};
-
-    //White Pieces
-        {"King", "White", "♔"};
-        {"Queen", "White", "♕"};
-        {"Rook", "White", "♖"};
-        {"Bishop", "White", "♗"};
-        {"Knight", "White", "♘"};
-        {"Pawn", "White", "♙"};
-
-*/
-
 
 
 class ChessBoard {
@@ -59,7 +40,6 @@ private:
    Color currentTurn;
    
    void boardSetup(){
-        
         //this created the empty board with no pieces on it.
         for(int i = 2; i < 6; i++){
             for(int j = 0; j < 8; j++){
@@ -73,7 +53,7 @@ private:
             board[6][i]= {PAWN, WHITE, 'P', 0};
         }
 
-        char backRowSymbolsBlack[8] = {'l', 'n', 'b', 'q', 'k', 'b', 'n', 'r'};
+        char backRowSymbolsBlack[8] = {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'l'};
         char backRowSymbolsWhite[8] = {'L', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
         PieceType backRowTypes[8] = {ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
 
@@ -81,18 +61,15 @@ private:
             board[0][i]= {backRowTypes[i], BLACK, backRowSymbolsBlack[i], 0};
             board[7][i]= {backRowTypes[i], WHITE, backRowSymbolsWhite[i], 0};
         }
-
-        }
+    }
     
 
 public: 
-    
     ChessBoard() {
         currentTurn = WHITE;
         boardSetup();
     }
     
-
     void displayBoardWhiteSide() {
         std::cout << "    a   b   c   d   e   f   g   h" << std::endl;
         std::cout << "  +---+---+---+---+---+---+---+---+" << std::endl;
@@ -121,13 +98,19 @@ public:
         std::cout << "    h   g   f   e   d   c   b   a"<< std::endl;
     }
 
-
+    Color getCurrentTurn() const {
+        return currentTurn;
+    }
+    void setCurrentTurn(){
+        if (getCurrentTurn() == WHITE) {
+            currentTurn = BLACK;
+        } else {
+            currentTurn = WHITE;
+        }
+        return;
+    }
 
 };
-
-
-
-
 
 
 
@@ -137,5 +120,6 @@ int main(){
     game.displayBoardWhiteSide();
     std::cout << "\n\n------------------------------------------\n\n";
     game.displayBoardBlackSide();
+    
     return 0;
 }
