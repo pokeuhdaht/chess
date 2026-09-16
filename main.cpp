@@ -88,11 +88,11 @@ public:
         std::cout << "    h   g   f   e   d   c   b   a" << std::endl;
         std::cout << "  +---+---+---+---+---+---+---+---+" << std::endl;
         for (int i = 7; i >= 0; i--) {
-            std::cout << i+1 << " | ";
+            std::cout << 8-i << " | ";
             for (int j = 7; j >= 0; j--) {
                 std::cout << board[i][j].symbol << " | ";
             }
-            std::cout << i + 1 << std::endl;
+            std::cout << 8-i << std::endl;
             std::cout << "  +---+---+---+---+---+---+---+---+" << std::endl;
         }
         std::cout << "    h   g   f   e   d   c   b   a"<< std::endl;
@@ -128,11 +128,12 @@ public:
             getUserMove();
             return;
         }
-        movePiece(move.c_str());
+        viableMoveCheck(move.c_str());
     }
 
-    void viableMove(int startRow, int startCol, int endRow, int endCol) {
+    void movePiece(int startRow, int startCol, int endRow, int endCol) {
         Piece pieceToMove = getPieceAt(startRow, startCol);
+        pieceToMove.moves += 1; // Increment the move count for the piece
         setPieceAt(endRow, endCol, pieceToMove);
         setPieceAt(startRow, startCol, {EMPTY, NONE, ' ', 0});
         setCurrentTurn();
@@ -141,7 +142,7 @@ public:
     
     // will need to adjust this function to work based on user input.
     // User input  s h o u l d  look like this: "e2e4" or "g1f3" or "b8c6"
-    void movePiece(const char* move) {
+    void viableMoveCheck(const char* move) {
         int startRow, startCol, endRow, endCol;
 
         switch (move[0]) {
@@ -204,7 +205,7 @@ public:
             case '8': endRow = 0; break;
             default: std::cout << "Invalid move format. Not in range." << std::endl; getUserMove(); return;
         }
-        viableMove(startRow, startCol, endRow, endCol);
+        movePiece(startRow, startCol, endRow, endCol);
     }
 
 
@@ -223,9 +224,14 @@ int main(){
     game.getUserMove();
     game.displayBoardWhiteSide();
     std::cout << "\n\n------------------------------------------\n\n";
+    game.displayBoardBlackSide();
     game.getUserMove();
+
+
+
     game.displayBoardWhiteSide();
         std::cout << "\n\n------------------------------------------\n\n";
+    game.displayBoardBlackSide();
 
     game.getUserMove();
     game.displayBoardWhiteSide();
