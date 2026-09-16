@@ -92,7 +92,7 @@ public:
             for (int j = 7; j >= 0; j--) {
                 std::cout << board[i][j].symbol << " | ";
             }
-            std::cout << i+1 << std::endl;
+            std::cout << i + 1 << std::endl;
             std::cout << "  +---+---+---+---+---+---+---+---+" << std::endl;
         }
         std::cout << "    h   g   f   e   d   c   b   a"<< std::endl;
@@ -119,6 +119,8 @@ public:
         board[row][col] = piece;
     }
 
+
+    /*
     // will need to adjust this function to work based on user input.
     // User input  s h o u l d  look like this: "e2e4" or "g1f3" or "b8c6"
     void movePiece(char[4] move) {
@@ -167,7 +169,7 @@ public:
         setPieceAt(startRow, startCol, {EMPTY, NONE, ' ', 0});
         setCurrentTurn();
     }
-
+    */
 
 
 };
