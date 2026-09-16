@@ -119,57 +119,94 @@ public:
         board[row][col] = piece;
     }
 
+    void getUserMove() {
+        std::string move;
+        std::cout << "Enter your move: ";
+        std::cin >> move;
+        if (move.length() != 4) {
+            std::cout << "Invalid move format. Please enter a move like 'e2e4'." << std::endl;
+            getUserMove();
+            return;
+        }
+        movePiece(move.c_str());
+    }
 
-    /*
-    // will need to adjust this function to work based on user input.
-    // User input  s h o u l d  look like this: "e2e4" or "g1f3" or "b8c6"
-    void movePiece(char[4] move) {
-        SWITCH (move[0]) {
-            CASE 'a': startCol = 0; BREAK;
-            CASE 'b': startCol = 1; BREAK;
-            CASE 'c': startCol = 2; BREAK;
-            CASE 'd': startCol = 3; BREAK;
-            CASE 'e': startCol = 4; BREAK;
-            CASE 'f': startCol = 5; BREAK;
-            CASE 'g': startCol = 6; BREAK;
-            CASE 'h': startCol = 7; BREAK;
-        }
-        SWITCH (move[1]) {
-            CASE '1': startRow = 7; BREAK;
-            CASE '2': startRow = 6; BREAK;
-            CASE '3': startRow = 5; BREAK;
-            CASE '4': startRow = 4; BREAK;
-            CASE '5': startRow = 3; BREAK;
-            CASE '6': startRow = 2; BREAK;
-            CASE '7': startRow = 1; BREAK;
-            CASE '8': startRow = 0; BREAK;
-        }
-        SWITCH (move[2]) {
-            CASE 'a': endCol = 0; BREAK;
-            CASE 'b': endCol = 1; BREAK;
-            CASE 'c': endCol = 2; BREAK;
-            CASE 'd': endCol = 3; BREAK;
-            CASE 'e': endCol = 4; BREAK;
-            CASE 'f': endCol = 5; BREAK;
-            CASE 'g': endCol = 6; BREAK;
-            CASE 'h': endCol = 7; BREAK;
-        }
-        SWITCH (move[3]) {
-            CASE '1': endRow = 7; BREAK;
-            CASE '2': endRow = 6; BREAK;
-            CASE '3': endRow = 5; BREAK;
-            CASE '4': endRow = 4; BREAK;
-            CASE '5': endRow = 3; BREAK;
-            CASE '6': endRow = 2; BREAK;
-            CASE '7': endRow = 1; BREAK;
-            CASE '8': endRow = 0; BREAK;
-        }
+    void viableMove(int startRow, int startCol, int endRow, int endCol) {
         Piece pieceToMove = getPieceAt(startRow, startCol);
         setPieceAt(endRow, endCol, pieceToMove);
         setPieceAt(startRow, startCol, {EMPTY, NONE, ' ', 0});
         setCurrentTurn();
     }
-    */
+
+    
+    // will need to adjust this function to work based on user input.
+    // User input  s h o u l d  look like this: "e2e4" or "g1f3" or "b8c6"
+    void movePiece(const char* move) {
+        int startRow, startCol, endRow, endCol;
+
+        switch (move[0]) {
+            case 'A': 
+            case 'a': startCol = 0; break;
+            case 'B':
+            case 'b': startCol = 1; break;
+            case 'C':
+            case 'c': startCol = 2; break;
+            case 'D':
+            case 'd': startCol = 3; break;
+            case 'E':
+            case 'e': startCol = 4; break;
+            case 'F':
+            case 'f': startCol = 5; break;
+            case 'G':
+            case 'g': startCol = 6; break;
+            case 'H':
+            case 'h': startCol = 7; break;
+            default: std::cout << "Invalid move format. Not in range." << std::endl; getUserMove(); return;
+        }
+        switch (move[1]) {
+            case '1': startRow = 7; break;
+            case '2': startRow = 6; break;
+            case '3': startRow = 5; break;
+            case '4': startRow = 4; break;
+            case '5': startRow = 3; break;
+            case '6': startRow = 2; break;
+            case '7': startRow = 1; break;
+            case '8': startRow = 0; break;
+            default: std::cout << "Invalid move format. Not in range." << std::endl; getUserMove(); return;
+        }
+        switch (move[2]) {
+            case 'A':
+            case 'a': endCol = 0; break;
+            case 'B':
+            case 'b': endCol = 1; break;
+            case 'C':
+            case 'c': endCol = 2; break;
+            case 'D':
+            case 'd': endCol = 3; break;
+            case 'E':
+            case 'e': endCol = 4; break;
+            case 'F':
+            case 'f': endCol = 5; break;
+            case 'G':
+            case 'g': endCol = 6; break;
+            case 'H':
+            case 'h': endCol = 7; break;
+            default: std::cout << "Invalid move format. Not in range." << std::endl; getUserMove(); return;
+        }
+        switch (move[3]) {
+            case '1': endRow = 7; break;
+            case '2': endRow = 6; break;
+            case '3': endRow = 5; break;
+            case '4': endRow = 4; break;
+            case '5': endRow = 3; break;
+            case '6': endRow = 2; break;
+            case '7': endRow = 1; break;
+            case '8': endRow = 0; break;
+            default: std::cout << "Invalid move format. Not in range." << std::endl; getUserMove(); return;
+        }
+        viableMove(startRow, startCol, endRow, endCol);
+    }
+
 
 
 };
@@ -180,8 +217,29 @@ int main(){
 
     ChessBoard game;
     game.displayBoardWhiteSide();
+    //std::cout << "\n\n------------------------------------------\n\n";
+    //game.displayBoardBlackSide();
+
+    game.getUserMove();
+    game.displayBoardWhiteSide();
     std::cout << "\n\n------------------------------------------\n\n";
-    game.displayBoardBlackSide();
+    game.getUserMove();
+    game.displayBoardWhiteSide();
+        std::cout << "\n\n------------------------------------------\n\n";
+
+    game.getUserMove();
+    game.displayBoardWhiteSide();
+    std::cout << "\n\n------------------------------------------\n\n";
+
+    game.getUserMove();
+    game.displayBoardWhiteSide();
+
+
+
+
+
+
+
     
     return 0;
 }
