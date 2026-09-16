@@ -120,15 +120,21 @@ public:
     }
 
     void getUserMove() {
-        std::string move;
-        std::cout << "Enter your move: ";
-        std::cin >> move;
-        if (move.length() != 4) {
-            std::cout << "Invalid move format. Please enter a move like 'e2e4'." << std::endl;
-            getUserMove();
-            return;
+        bool validMove = false;
+        while (!validMove) {
+            std::string move;
+            std::cout << "Enter your move: ";
+            std::cin >> move;
+            if (move.length() != 4) {
+                std::cout << "Invalid move format. Please enter a move like 'e2e4'." << std::endl;
+                continue; // Prompt the user again
+            }
+            validMove = viableMoveCheck(move.c_str());
+            if (!validMove) {
+                std::cout << "Invalid move. Please try again." << std::endl;
+            }
         }
-        viableMoveCheck(move.c_str());
+        //movePiece(startRow, startCol, endRow, endCol);
     }
 
     void movePiece(int startRow, int startCol, int endRow, int endCol) {
@@ -142,9 +148,8 @@ public:
     
     // will need to adjust this function to work based on user input.
     // User input  s h o u l d  look like this: "e2e4" or "g1f3" or "b8c6"
-    void viableMoveCheck(const char* move) {
+    bool viableMoveCheck(const char* move) {
         int startRow, startCol, endRow, endCol;
-
         switch (move[0]) {
             case 'A': 
             case 'a': startCol = 0; break;
@@ -162,7 +167,7 @@ public:
             case 'g': startCol = 6; break;
             case 'H':
             case 'h': startCol = 7; break;
-            default: std::cout << "Invalid move format. Not in range." << std::endl; getUserMove(); return;
+            default: return false;
         }
         switch (move[1]) {
             case '1': startRow = 7; break;
@@ -173,7 +178,7 @@ public:
             case '6': startRow = 2; break;
             case '7': startRow = 1; break;
             case '8': startRow = 0; break;
-            default: std::cout << "Invalid move format. Not in range." << std::endl; getUserMove(); return;
+            default: return false;
         }
         switch (move[2]) {
             case 'A':
@@ -192,7 +197,7 @@ public:
             case 'g': endCol = 6; break;
             case 'H':
             case 'h': endCol = 7; break;
-            default: std::cout << "Invalid move format. Not in range." << std::endl; getUserMove(); return;
+            default: return false;
         }
         switch (move[3]) {
             case '1': endRow = 7; break;
@@ -203,9 +208,10 @@ public:
             case '6': endRow = 2; break;
             case '7': endRow = 1; break;
             case '8': endRow = 0; break;
-            default: std::cout << "Invalid move format. Not in range." << std::endl; getUserMove(); return;
+            default: return false;
         }
         movePiece(startRow, startCol, endRow, endCol);
+        return true;
     }
 
 
