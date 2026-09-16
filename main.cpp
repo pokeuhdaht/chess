@@ -7,7 +7,6 @@
 
 //using namespace std;
 
-
 enum Color {
     WHITE,
     BLACK,
@@ -29,6 +28,7 @@ struct Piece {
     Color color;
     char symbol;
     int moves;
+    bool inCheck;
 
 };
 
@@ -53,8 +53,8 @@ private:
             board[6][i]= {PAWN, WHITE, 'P', 0};
         }
 
-        char backRowSymbolsBlack[8] = {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'l'};
-        char backRowSymbolsWhite[8] = {'L', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
+        char backRowSymbolsBlack[8] = {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'};
+        char backRowSymbolsWhite[8] = {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
         PieceType backRowTypes[8] = {ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
 
         for (int i = 0; i < 8; i++){
@@ -141,7 +141,7 @@ public:
         Piece pieceToMove = getPieceAt(startRow, startCol);
         pieceToMove.moves += 1; // Increment the move count for the piece
         setPieceAt(endRow, endCol, pieceToMove);
-        setPieceAt(startRow, startCol, {EMPTY, NONE, ' ', 0});
+        setPieceAt(startRow, startCol, {EMPTY, NONE, ' ', 0, false}); // Clear the starting position
         setCurrentTurn();
     }
 
@@ -210,6 +210,15 @@ public:
             case '8': endRow = 0; break;
             default: return false;
         }
+        if (board[startRow][startCol].color != currentTurn) {
+            std::cout << "Wrong Piece!" << std::endl;
+            return false;
+        }
+        if (board[endRow][endCol].color == currentTurn) {
+            std::cout << "Cannot capture your own piece!" << std::endl;
+            return false;
+        }
+
         movePiece(startRow, startCol, endRow, endCol);
         return true;
     }
