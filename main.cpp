@@ -314,6 +314,35 @@ public:
         return true;
     }
 
+                        //Checks if a winner has been found. this is basic that just checks if a check is in place.
+                        //I will want to change how this function works in the future.
+    bool winnerCheck(){
+        for(int i=0; i<8;i++){
+            for(int j=0; j<8;j++){
+                if(board[i][j].inCheck==true){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    void gameStart(){
+        Color winner = NONE;
+        while(winner==NONE){
+            if(currentTurn==WHITE) displayBoardWhiteSide();
+            else displayBoardBlackSide();
+
+            getUserMove();    
+            winnerCheck();
+
+        }
+
+        return;
+    }
+
+
+
 
 };
 
@@ -322,32 +351,7 @@ public:
 int main(){
 
     ChessBoard game;
-    game.displayBoardWhiteSide();
-    //std::cout << "\n\n------------------------------------------\n\n";
-    //game.displayBoardBlackSide();
-
-    game.getUserMove();
-    game.displayBoardWhiteSide();
-    std::cout << "\n\n------------------------------------------\n\n";
-    game.displayBoardBlackSide();
-    game.getUserMove();
-
-
-
-    game.displayBoardWhiteSide();
-        std::cout << "\n\n------------------------------------------\n\n";
-    game.displayBoardBlackSide();
-
-    game.getUserMove();
-    game.displayBoardWhiteSide();
-    std::cout << "\n\n------------------------------------------\n\n";
-
-    game.getUserMove();
-    game.displayBoardWhiteSide();
-
-
-
-
+    game.gameStart();
 
 
 
