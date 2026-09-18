@@ -145,6 +145,37 @@ public:
         setCurrentTurn();
     }
 
+    bool inWayCheck(int startRow, int startCol, int endRow, int endCol) {
+        int rowDirection = (endRow - startRow) > 0 ? 1 : -1;
+        int colDirection = (endCol - startCol) > 0 ? 1 : -1;
+
+        if (startRow == endRow) { // Horizontal move
+            for (int col = startCol + colDirection; col != endCol; col += colDirection) {
+                if (board[startRow][col].type != EMPTY) {
+                    return true; // There is a piece in the way
+                }
+            }
+        } else if (startCol == endCol) { // Vertical move
+            for (int row = startRow + rowDirection; row != endRow; row += rowDirection) {
+                if (board[row][startCol].type != EMPTY) {
+                    return true; // There is a piece in the way
+                }
+            }
+        } else if (abs(endRow - startRow) == abs(endCol - startCol)) { // Diagonal move
+            int row = startRow + rowDirection;
+            int col = startCol + colDirection;
+            while (row != endRow && col != endCol) {
+                if (board[row][col].type != EMPTY) {
+                    return true; // There is a piece in the way
+                }
+                row += rowDirection;
+                col += colDirection;
+            }
+        }
+
+        return false; // No pieces in the way
+    }
+
     
     // will need to adjust this function to work based on user input.
     // User input  s h o u l d  look like this: "e2e4" or "g1f3" or "b8c6"
@@ -210,6 +241,63 @@ public:
             case '8': endRow = 0; break;
             default: return false;
         }
+
+        switch (board[startRow][startCol].type)
+        {
+            case PAWN:                
+                break;
+            case BISHOP:
+                if(board[startRow][startCol].color == WHITE){
+                    if (abs(startRow - endRow) != abs(startCol - endCol)) {
+                        std::cout << "Invalid bishop move!" << std::endl;
+                        return false;
+                    }
+                }
+                if(inWayCheck(startRow, startCol, endRow, endCol)){
+                    std::cout << "There is a piece in the way!" << std::endl;
+                    return false;
+                }
+                break;  
+            case KNIGHT:
+                if (!((abs(startRow - endRow) == 2 && abs(startCol - endCol) == 1) || (abs(startRow - endRow) == 1 && abs(startCol - endCol) == 2))) {
+                    std::cout << "Invalid knight move!" << std::endl;
+                    return false;
+                }
+                break;
+            case ROOK:
+                if (startRow != endRow && startCol != endCol) {
+                    std::cout << "Invalid rook move!" << std::endl;
+                    return false;
+                }
+                if(inWayCheck(startRow, startCol, endRow, endCol)){
+                    std::cout << "There is a piece in the way!" << std::endl;
+                    return false;
+                }
+                break;
+            case KING:
+                if (abs(startRow - endRow) > 1 || abs(startCol - endCol) > 1) {
+                    std::cout << "Invalid king move!" << std::endl;
+                    return false;
+                }
+                break;
+            case QUEEN:
+                if (startRow != endRow && startCol != endCol && abs(startRow - endRow) != abs(startCol - endCol)) {
+                    std::cout << "Invalid queen move!" << std::endl;
+                    return false;
+                }
+                if(inWayCheck(startRow, startCol, endRow, endCol)){
+                    std::cout << "There is a piece in the way!" << std::endl;
+                    return false;
+                }
+                break;
+            case EMPTY:
+                std::cout << "Not a valid piece!" << std::endl;
+                return false;
+        
+        }
+
+
+
         if (board[startRow][startCol].color != currentTurn) {
             std::cout << "Wrong Piece!" << std::endl;
             return false;
@@ -219,10 +307,12 @@ public:
             return false;
         }
 
+
+
+
         movePiece(startRow, startCol, endRow, endCol);
         return true;
     }
-
 
 
 };
