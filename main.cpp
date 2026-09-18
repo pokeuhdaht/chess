@@ -244,7 +244,8 @@ public:
 
         switch (board[startRow][startCol].type)
         {
-            case PAWN:                
+            case PAWN: 
+                                                    //still need to add pawn movement and check               
                 break;
             case BISHOP:
                 if(board[startRow][startCol].color == WHITE){
