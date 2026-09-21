@@ -181,6 +181,18 @@ public:
     // User input  s h o u l d  look like this: "e2e4" or "g1f3" or "b8c6"
     bool viableMoveCheck(const char* move) {
         int startRow, startCol, endRow, endCol;
+
+        if(move[0]=='e'||move[0]=='E'&&move[1]=='x'||move[1]=='X'&&move[2]=='i'||move[2]=='I'&&move[3]=='t'||move[3]=='T'){
+            std::cout << "Are you sure you want to close the game? (Y/N): ";
+            char yesno;
+            std::cin >> yesno; 
+            if(yesno == 'Y' || yesno == 'y'){
+                exit(0);
+            }
+        
+        }
+
+
         switch (move[0]) {
             case 'A': 
             case 'a': startCol = 0; break;
