@@ -110,6 +110,15 @@ public:
         return;
     }
 
+    void exitGame(){
+        std::cout << "Are you sure you want to close the game? (Y/N): ";
+        char yesno;
+        std::cin >> yesno; 
+        if(yesno == 'Y' || yesno == 'y'){
+            exit(0);
+        }
+    }
+
     //get the piece at a specific position on the board
     Piece getPieceAt(int row, int col) const {
         return board[row][col];
@@ -182,14 +191,11 @@ public:
     bool viableMoveCheck(const char* move) {
         int startRow, startCol, endRow, endCol;
 
-        if(move[0]=='e'||move[0]=='E'&&move[1]=='x'||move[1]=='X'&&move[2]=='i'||move[2]=='I'&&move[3]=='t'||move[3]=='T'){
-            std::cout << "Are you sure you want to close the game? (Y/N): ";
-            char yesno;
-            std::cin >> yesno; 
-            if(yesno == 'Y' || yesno == 'y'){
-                exit(0);
-            }
-        
+        if(move[0]=='e'&&move[1]=='x'&&move[2]=='i'&&move[3]=='t'){
+            exitGame();
+        }
+        if(move[0]=='E'&&move[1]=='X'&&move[2]=='I'&&move[3]=='T'){
+            exitGame();
         }
 
 
@@ -348,9 +354,7 @@ public:
 
             getUserMove();    
             winnerCheck();
-
         }
-
         return;
     }
 
