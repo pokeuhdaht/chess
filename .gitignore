@@ -2,3 +2,5 @@
 *.pdb
 *.obj
 .vscode/
+*.exe
+
