@@ -263,14 +263,15 @@ public:
         switch (board[startRow][startCol].type)
         {
             case PAWN: 
-                                                    //still need to add pawn movement and check               
+                //still need to add pawn movement and check               
+                
+                
+                
                 break;
             case BISHOP:
-                if(board[startRow][startCol].color == WHITE){
-                    if (abs(startRow - endRow) != abs(startCol - endCol)) {
-                        std::cout << "Invalid bishop move!" << std::endl;
-                        return false;
-                    }
+                if (abs(startRow - endRow) != abs(startCol - endCol)) {
+                    std::cout << "Invalid bishop move!" << std::endl;
+                    return false;
                 }
                 if(inWayCheck(startRow, startCol, endRow, endCol)){
                     std::cout << "There is a piece in the way!" << std::endl;
