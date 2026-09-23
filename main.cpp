@@ -263,7 +263,19 @@ public:
         switch (board[startRow][startCol].type)
         {
             case PAWN: 
-                //still need to add pawn movement and check               
+                //does not allow for diagonal or side movement               
+                if(startCol != endCol){
+                    return false;
+                }
+                if(board[startRow][startCol].moves == 0){
+                    if(abs(startRow-endRow)>2){
+                        return false;
+                    }
+                }else {
+                    if(abs(endRow-startRow)!=1){
+                        return false;
+                    }
+                }
                 
                 
                 
