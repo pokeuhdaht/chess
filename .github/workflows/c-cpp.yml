@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: C++ CI (Direct Compiler)
 
 on:
   push:
@@ -8,16 +8,17 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    # 1. Check out the repository code
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. Compile the C++ program directly using g++
+    - name: Compile C++ program
+      run: g++ -std=c++20 main.cpp -o my_cli_app
+
+    # 3. Optional: Run the compiled application as a basic test
+    - name: Run application
+      run: ./my_cli_app --version
