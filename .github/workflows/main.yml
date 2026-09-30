@@ -23,6 +23,5 @@ jobs:
     - name: Run application
       run: |
         echo -e "exit" | ./my_cli_app
+        echo -e "y"
         
-    - name: Timeout
-      run: cancel-timeout-minutes 1
