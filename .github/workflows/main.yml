@@ -21,4 +21,10 @@ jobs:
 
     # 3. Optional: Run the compiled application as a basic test
     - name: Run application
-      run: ./my_cli_app --version
+      run: ./my_cli_app
+
+    - name: Exit Application
+      run: echo "exit"
+        
+    - name: Timeout
+      run: cancel-timeout-minutes 1
