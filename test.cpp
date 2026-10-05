@@ -1,5 +1,7 @@
 #include "chess.cpp"
+#include <iostream>
 
-int testFunction() {
+int main() {
+    std::cout << "Testing" << std::endl;
     return 0;
 }
