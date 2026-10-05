@@ -1,5 +1,5 @@
 #include "chess.cpp"
 
-bool testFunction() {
-    return true;
+int testFunction() {
+    return 0;
 }
