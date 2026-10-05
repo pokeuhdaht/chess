@@ -2,7 +2,5 @@
 *.pdb
 *.obj
 .vscode/
-
-main.exe
-
+*.exe
 .fake
