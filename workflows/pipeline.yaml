@@ -1,0 +1,21 @@
+name: Chess CI Pipeline
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up C++ environment
+        uses: actions/setup-cpp@v1
+      - name: Build
+      - name: Run tests
+        run: |
+          g++ -o test test.cpp chess.cpp
+          ./test
