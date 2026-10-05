@@ -16,5 +16,5 @@ jobs:
 
       - name: Run tests
         run: |
-          g++ -o test test.cpp chess.cpp
+          g++ -o test test.cpp
           ./test
