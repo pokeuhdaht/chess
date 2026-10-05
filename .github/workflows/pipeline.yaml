@@ -13,9 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
-      - name: Set up C++ environment
-        uses: actions/setup-cpp@v1
 
       - name: Run tests
         run: |
