@@ -4,3 +4,6 @@
 .vscode/
 *.exe
 .fake
+main
+main.dSYM/Contents/Info.plist
+main.dSYM/Contents/Resources/Relocations/x86_64/main.yml
